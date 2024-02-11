@@ -18,6 +18,10 @@ const userModel = mongoose.Schema({
     fullName: {
         type: String,
         requied: true
+    },
+    type: {
+        type: String,
+        require: true
     }
 }, { timestamps: true })
 module.exports = mongoose.model("userdata", userModel)

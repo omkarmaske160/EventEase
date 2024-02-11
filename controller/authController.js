@@ -48,7 +48,8 @@ exports.login = async (req, res) => {
             message: "User login successfully", result: {
                 fullName: result.fullName,
                 email: result.email,
-                user_id: result.user_id
+                user_id: result.user_id,
+                type: result.type
             }
         });
     } catch (error) {
@@ -101,11 +102,11 @@ exports.register = async (req, res) => {
             const hashPass = await bcrypt.hash(password, 10)
             const x = await sendEmail({
                 to: email,
-                subject: "Welcome to SKILLHUB",
+                subject: "Welcome to EventEase",
                 message: `Thank you ${fullName} for registring with us`
             })
 
-            await userModel.create({ ...req.body, password: hashPass, user_id: uuid() })
+            await userModel.create({ ...req.body, password: hashPass, user_id: uuid(), type: "user" })
 
             res.status(200).json({ message: "user register successfully" })
         }
