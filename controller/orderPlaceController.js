@@ -148,3 +148,31 @@ exports.initiatePayment = async (req, res) => {
     }
 
 }
+exports.QrChecking = async (req, res) => {
+    try {
+        const { order_id } = req.params;
+        console.log(order_id);
+
+        // Find the order in the database
+        const order = await orderModel.findOne({ order_id });
+
+        if (!order) {
+            return res.status(404).json({ message: 'Order not found' });
+        }
+
+        // If the order is found, check if it's already scanned
+        if (order.scan === false) {
+            // Update scan status to true
+            order.scan = true;
+            await order.save();
+
+            return res.status(200).json({ message: 'Event scanned successfully', result: order });
+        } else {
+            return res.status(400).json({ message: 'Event already scanned', result: order });
+        }
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'Internal Server Error' });
+    }
+
+}
