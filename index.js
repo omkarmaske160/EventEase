@@ -22,6 +22,10 @@ mongoose.connect(process.env.MONGO_URL)
 app.use("/api/v1/events", require("./routes/eventRoute"))
 app.use("/api/v2/auth", require("./routes/authRoute"))
 app.use("/api/v2/user", userProtected, require("./routes/userRoute"))
+app.use("/api/v2/admin", require("./routes/adminRoute"))
+app.use("/api/v2/feedback", require("./routes/feedbackRoute"))
+app.use("/api/v2/order", require("./routes/orderRoute"))
+app.use("/api/v2/org", require("./routes/orgRoute"))
 
 
 app.use("*", (req, res) => {

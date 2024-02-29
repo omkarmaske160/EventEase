@@ -1,5 +1,5 @@
 const nodemailer = require("nodemailer")
-const sendEmail = ({ to, subject, message }) => new Promise((resolve, reject) => {
+const sendEmail = ({ to, subject, message, html, attachments }) => new Promise((resolve, reject) => {
     try {
         const mailer = nodemailer.createTransport({
             service: "gmail",
@@ -9,7 +9,14 @@ const sendEmail = ({ to, subject, message }) => new Promise((resolve, reject) =>
             }
         })
 
-        mailer.sendMail({ to, from: process.env.FORM_EMAIL, text: message, subject }, (err) => {
+        mailer.sendMail({
+            to,
+            from: process.env.FORM_EMAIL,
+            text: message,
+            subject,
+            html,
+            attachments
+        }, (err) => {
             if (err) {
                 console.log(err);
                 reject(err.message)

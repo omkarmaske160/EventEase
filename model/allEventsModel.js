@@ -5,6 +5,10 @@ const AllEventSchema = mongoose.Schema({
         type: String,
         required: true
     },
+    active: {
+        type: Boolean,
+        required: true
+    },
     event_desc: {
         type: String,
         required: true

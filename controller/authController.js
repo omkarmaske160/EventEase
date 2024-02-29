@@ -42,7 +42,7 @@ exports.login = async (req, res) => {
             });
         }
 
-        const token = jwt.sign({ user_id: result._id }, process.env.JWT_KEY, { expiresIn: "3d" });
+        const token = jwt.sign({ user_id: result.user_id }, process.env.JWT_KEY, { expiresIn: "3d" });
         res.cookie("auth", token, { maxAge: 60 * 60 * 60 * 12 });
         res.status(200).json({
             message: "User login successfully", result: {
@@ -69,14 +69,15 @@ exports.logout = async (req, res) => {
 }
 exports.register = async (req, res) => {
     try {
-        const { email, password, fullName } = req.body
+        const { email, password, fullName, type } = req.body
 
         const existingUser = await userModel.findOne({ email })
 
         if (
             validator.isEmpty(email) ||
             validator.isEmpty(password) ||
-            validator.isEmpty(fullName)
+            validator.isEmpty(fullName) ||
+            validator.isEmpty(type)
 
         ) {
             res.status(400).json({
@@ -106,7 +107,7 @@ exports.register = async (req, res) => {
                 message: `Thank you ${fullName} for registring with us`
             })
 
-            await userModel.create({ ...req.body, password: hashPass, user_id: uuid(), type: "user" })
+            await userModel.create({ ...req.body, password: hashPass, user_id: uuid() })
 
             res.status(200).json({ message: "user register successfully" })
         }

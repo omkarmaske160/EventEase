@@ -21,6 +21,9 @@ exports.userProtected = async (req, res, next) => {
             }
             // Set user_id in request body for later use
             req.body.user_id = decode.user_id;
+            console.log("//////////a");
+            console.log(req.body.user_id);
+            console.log("//////////a");
             next();
         })
     } catch (error) {
