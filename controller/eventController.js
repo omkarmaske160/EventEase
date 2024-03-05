@@ -29,6 +29,25 @@ exports.getDisplayEvent = async (req, res) => {
     }
 };
 
+exports.searchEvents = async (req, res) => {
+    const searchTerm = req.params.searchTerm;
+    try {
+        // Search events where event_title, event_desc, or event_guest contains the searchTerm
+        const events = await allEventsModel.find({
+            $or: [
+                { event_title: { $regex: searchTerm, $options: 'i' } }, // Case-insensitive search
+                { event_desc: { $regex: searchTerm, $options: 'i' } },
+                { event_guest: { $regex: searchTerm, $options: 'i' } }
+            ]
+        });
+
+        res.json(events);
+    } catch (error) {
+        console.error('Error searching events:', error);
+        res.status(500).json({ message: 'Server Error' });
+    }
+};
+
 
 
 
