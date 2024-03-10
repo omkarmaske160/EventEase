@@ -93,9 +93,9 @@ exports.placeOrders = async (req, res) => {
 
             await sendEmail({
                 to: email,
-                subject: "Show Ticket",
+                subject: "EventEase booked Show Ticket",
                 html: `
-                    <h2>Your Show Ticket</h2>
+                    <h2>Show Ticket</h2>
                     <p>Thank you for booking the show. We hope you will enjoy it.</p>
                     <p>This QR code is your ticket for the event. Please do not share it with anyone else.</p>
                     <p>Event Title: ${event_title}</p>
@@ -103,7 +103,6 @@ exports.placeOrders = async (req, res) => {
                     <p>Price: ${price}</p>
                     <p>Number of Tickets: ${No_Of_Ticket}</p>
                     <p>Event ID: ${event_id}</p>
-                    <img src="cid:${qrCodeImage}" alt="QR Code" />
                 `,
                 attachments: [{
                     filename: 'ticket.pdf',
