@@ -9,7 +9,7 @@ const { userProtected } = require("./middleware/protected")
 
 const app = express()
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: "https://eventease-pln4.onrender.com",
     credentials: true
 }))
 app.use(express.json())
