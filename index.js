@@ -15,6 +15,8 @@ app.use(cors({
 app.use(express.json())
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, "assets/eventImg")))
+app.use(express.static(path.join(__dirname, "dist")))
+
 mongoose.connect(process.env.MONGO_URL)
 
 
