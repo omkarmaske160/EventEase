@@ -14,7 +14,7 @@ app.use(cors({
 }))
 app.use(express.json())
 app.use(cookieParser())
-app.use(express.static("assets/eventImg"))
+app.use(express.static(path.join(__dirname, "assets/eventImg")))
 mongoose.connect(process.env.MONGO_URL)
 
 
@@ -28,10 +28,14 @@ app.use("/api/v2/order", require("./routes/orderRoute"))
 app.use("/api/v2/org", require("./routes/orgRoute"))
 
 
+// app.use("*", (req, res) => {
+//     res.status(400).json({
+//         message: "response not found"
+//     })
+// })
+
 app.use("*", (req, res) => {
-    res.status(400).json({
-        message: "response not found"
-    })
+    res.sendFile(path.join(__dirname, "dist", "index.html"))
 })
 
 
