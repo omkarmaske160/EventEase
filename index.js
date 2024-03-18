@@ -5,6 +5,8 @@ require("dotenv").config({ path: "./.env" })
 const cors = require("cors")
 const cookieParser = require("cookie-parser")
 const { userProtected } = require("./middleware/protected")
+const path = require("path")
+
 
 
 const app = express()
@@ -38,6 +40,7 @@ app.use("/api/v2/org", require("./routes/orgRoute"))
 
 app.use("*", (req, res) => {
     res.sendFile(path.join(__dirname, "dist", "index.html"))
+
 })
 
 
