@@ -3,38 +3,42 @@ const userModel = require("../model/userModel")
 const { v4: uuid } = require("uuid")
 const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
-const { upload } = require("../util/imgUpload")
 const validator = require("validator")
 const sendEmail = require("../util/emailShout")
+
 
 
 
 exports.login = async (req, res) => {
     try {
         const { email, password } = req.body;
-        const result = await userModel.findOne({ email });
+        console.log(email, password);
 
-        if (
-            validator.isEmpty(email) ||
-            validator.isEmpty(password)
-        ) {
-            res.status(400).json({
-                message: "all fields required"
-            })
+        // Check if email and password fields are empty
+        if (validator.isEmpty(email) || validator.isEmpty(password)) {
+            return res.status(400).json({
+                message: "All fields required"
+            });
         }
 
+        // Check if email format is valid
         if (!validator.isEmail(email)) {
             return res.status(400).json({
-                message: "enter proper email"
-            })
+                message: "Enter proper email"
+            });
         }
 
+        // Query the database for the user
+        const result = await userModel.findOne({ email });
+        console.log(result);
+        // Check if user exists
         if (!result) {
             return res.status(401).json({
                 message: 'Email is invalid'
             });
         }
 
+        // Check if password matches
         const passwordCheck = await bcrypt.compare(password, result.password);
         if (!passwordCheck) {
             return res.status(401).json({
@@ -42,10 +46,12 @@ exports.login = async (req, res) => {
             });
         }
 
+        // Generate JWT token
         const token = jwt.sign({ user_id: result.user_id }, process.env.JWT_KEY, { expiresIn: "3d" });
         res.cookie("auth", token, { maxAge: 60 * 60 * 60 * 12 });
         res.status(200).json({
-            message: "User login successfully", result: {
+            message: "User login successfully",
+            result: {
                 fullName: result.fullName,
                 email: result.email,
                 user_id: result.user_id,
@@ -57,7 +63,6 @@ exports.login = async (req, res) => {
         res.status(400).json({ message: error.message || "Something went wrong" });
     }
 };
-
 exports.logout = async (req, res) => {
     try {
         res.clearCookie("auth")
